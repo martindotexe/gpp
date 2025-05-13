@@ -35,8 +35,20 @@ func ScaleToFit(img image.Image) image.Image {
 		return img
 	}
 
+	var sclFc float32
+	dx, dy := dim.Dx(), dim.Dy()
+
+	switch max(dim.Dx(), dim.Dy()) {
+	case dim.Dx():
+		sclFc = float32(img.Bounds().Dy()) / float32(dim.Dy())
+		dx = int(float32(img.Bounds().Dx()) / sclFc)
+	case dim.Dy():
+		sclFc = float32(img.Bounds().Dx()) / float32(dim.Dx())
+		dy = int(float32(img.Bounds().Dy()) / sclFc)
+	}
+
 	// Set the expected size that you want:
-	dst := image.NewRGBA(image.Rect(0, 0, dim.Dx(), dim.Dy()))
+	dst := image.NewRGBA(image.Rect(0, 0, dx, dy))
 
 	// Resize:
 	draw.NearestNeighbor.Scale(dst, dst.Rect, img, img.Bounds(), draw.Over, nil)
