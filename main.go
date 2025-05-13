@@ -3,7 +3,7 @@ package main
 import (
 	"image"
 	"log"
-	gpp "martindotexe/gpp/pkg/gpp/image"
+	"martindotexe/gpp/pkg/gpp/image"
 	"os"
 )
 

@@ -3,7 +3,9 @@ package gpp
 import (
 	"errors"
 	"fmt"
+	_ "golang.org/x/image/webp"
 	"image"
+	_ "image/gif"
 	_ "image/jpeg"
 	_ "image/png"
 
