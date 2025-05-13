@@ -3,7 +3,7 @@ package main
 import (
 	"image"
 	"log"
-	"martindotexe/pp/pkg/pp"
+	gpp "martindotexe/gpp/pkg/gpp/image"
 	"os"
 )
 
@@ -19,5 +19,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	pp.ImagePP(img)
+	gpp.Image(img)
 }

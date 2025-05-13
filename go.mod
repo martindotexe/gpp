@@ -1,4 +1,4 @@
-module martindotexe/pp
+module martindotexe/gpp
 
 go 1.24.1
 

@@ -1,4 +1,4 @@
-package pp
+package gpp
 
 import (
 	"errors"
@@ -13,7 +13,7 @@ import (
 
 const hb = '▀'
 
-func GetDimensions() (image.Rectangle, error) {
+func getDimensions() (image.Rectangle, error) {
 	if !term.IsTerminal(0) {
 		return image.Rect(0, 0, 0, 0), errors.New("Not a terminal")
 	}
@@ -24,26 +24,21 @@ func GetDimensions() (image.Rectangle, error) {
 	return image.Rect(0, 0, width, (height*2)-2), nil
 }
 
-func ScaleToFit(img image.Image) image.Image {
-	dim, err := GetDimensions()
-	if err != nil {
-		panic(err)
-	}
-
+func scaleToFit(img image.Image, rec image.Rectangle) image.Image {
 	// Check if image is larger than terminal
-	if img.Bounds().Dx() < dim.Dx() && img.Bounds().Dy() < dim.Dy() {
+	if img.Bounds().Dx() < rec.Dx() && img.Bounds().Dy() < rec.Dy() {
 		return img
 	}
 
 	var sclFc float32
-	dx, dy := dim.Dx(), dim.Dy()
+	dx, dy := rec.Dx(), rec.Dy()
 
-	switch max(dim.Dx(), dim.Dy()) {
-	case dim.Dx():
-		sclFc = float32(img.Bounds().Dy()) / float32(dim.Dy())
+	switch max(rec.Dx(), rec.Dy()) {
+	case rec.Dx():
+		sclFc = float32(img.Bounds().Dy()) / float32(rec.Dy())
 		dx = int(float32(img.Bounds().Dx()) / sclFc)
-	case dim.Dy():
-		sclFc = float32(img.Bounds().Dx()) / float32(dim.Dx())
+	case rec.Dy():
+		sclFc = float32(img.Bounds().Dx()) / float32(rec.Dx())
 		dy = int(float32(img.Bounds().Dy()) / sclFc)
 	}
 
@@ -56,9 +51,14 @@ func ScaleToFit(img image.Image) image.Image {
 	return dst
 }
 
-func ImagePP(img image.Image) {
+func Image(img image.Image) {
+	rec, err := getDimensions()
 
-	img = ScaleToFit(img)
+	if err != nil {
+		panic(err)
+	}
+
+	img = scaleToFit(img, rec)
 
 	bounds := img.Bounds()
 
